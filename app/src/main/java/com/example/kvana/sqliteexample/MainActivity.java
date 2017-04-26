@@ -1,5 +1,7 @@
 package com.example.kvana.sqliteexample;
 
+import android.database.Cursor;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     DataHelper myData;
     EditText name,surname,marks;
     Button adddata;
+    Button viewall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
         adddata= (Button) findViewById(R.id.adddata_btn);
         AddData();
 
+        viewall= (Button) findViewById(R.id.viewall_btn);
+        viewAll();
     }
 
     public void AddData(){
@@ -40,5 +45,37 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void viewAll(){
+        viewall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Cursor res=myData.getAllData();
+                if(res.getCount() == 0){
+                    //showMessage
+                    showMessage("ERROR","Data not found");
+                    return;
+                }
+                StringBuffer buffer = new StringBuffer();
+                while(res.moveToNext()){
+                    buffer.append("ID :"+res.getString(0)+"\n");
+                    buffer.append("NAME :"+res.getString(1)+"\n");
+                    buffer.append("SURNAME :"+res.getString(2)+"\n");
+                    buffer.append("MARKS:"+res.getString(3)+"\n\n");
+                }
+                // show all data
+                showMessage("Data",buffer.toString());
+            }
+        });
+    }
+
+    public void showMessage(String title, String message){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.show();
+
     }
 }
