@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     Button adddata;
     Button viewall;
     Button update;
+    Button delete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,18 +25,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         myData = new DataHelper(this);
 
-        name= (EditText) findViewById(R.id.name_et);
-        surname= (EditText) findViewById(R.id.surname_et);
-        marks= (EditText) findViewById(R.id.marks_et);
-        id= (EditText) findViewById(R.id.id_et);
-        adddata= (Button) findViewById(R.id.adddata_btn);
+        name = (EditText) findViewById(R.id.name_et);
+        surname = (EditText) findViewById(R.id.surname_et);
+        marks = (EditText) findViewById(R.id.marks_et);
+        id = (EditText) findViewById(R.id.id_et);
+        adddata = (Button) findViewById(R.id.adddata_btn);
         AddData();
 
-        viewall= (Button) findViewById(R.id.viewall_btn);
+        viewall = (Button) findViewById(R.id.viewall_btn);
         viewAll();
 
         update= (Button) findViewById(R.id.update_btn);
         UpdateData();
+
+        delete = (Button) findViewById(R.id.delete_btn);
+        DeleteData();
     }
 
     public void AddData(){
@@ -93,6 +97,20 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this,"Data is Updated",Toast.LENGTH_LONG).show();
                 }else{
                     Toast.makeText(MainActivity.this,"Data is Not Updated",Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    public void DeleteData(){
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Integer deleteRows = myData.deleteData(id.getText().toString());
+                if(deleteRows > 0){
+                    Toast.makeText(MainActivity.this,"Data is Deleted",Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(MainActivity.this,"Data is Not Deleted",Toast.LENGTH_LONG).show();
                 }
             }
         });
